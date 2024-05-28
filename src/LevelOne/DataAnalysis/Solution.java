@@ -5,7 +5,7 @@ package LevelOne.DataAnalysis;
 import java.util.HashSet;
 import java.util.Random;
 
-public class Solutions {
+public class Solution {
 
 	public static void main(String[] args) {
 		
