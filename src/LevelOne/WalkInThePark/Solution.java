@@ -5,6 +5,8 @@ import java.util.Random;
 
 /* 프로그래머스 level 1. 공원 산책 */
 public class Solution {
+	
+	int a = 0;
 
 	public static class Pair {
 		
