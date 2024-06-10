@@ -30,6 +30,8 @@ public class Solution {
 	
 	public static int[] run(String[] park, String[] routes) {
 	
+		int [] answer = new int[2];
+		
 		String [][] parkArray = new String[park.length][];
 		String [][] routesArray = new String[routes.length][];
 		
@@ -43,12 +45,12 @@ public class Solution {
 		
 		System.out.println("== 전처리 데이터 확인 == \n");
 		
-		System.out.println("배열 'parkArray' 확인");
-		for(int i = 0; i < parkArray.length; i++) {
-			for(int j = 0; j < parkArray[i].length; j++)
-				System.out.print("parkArray[" + i + "][" + j + "] : " + parkArray[i][j] + ", ");
-			System.out.println();
-		}
+//		System.out.println("배열 'parkArray' 확인");
+//		for(int i = 0; i < parkArray.length; i++) {
+//			for(int j = 0; j < parkArray[i].length; j++)
+//				System.out.print("parkArray[" + i + "][" + j + "] : " + parkArray[i][j] + ", ");
+//			System.out.println();
+//		}
 		System.out.println();
 		
 		System.out.println("배열 'routesArray' 확인");
@@ -58,14 +60,13 @@ public class Solution {
 			System.out.println();
 		}
 		
-		park = null;
-		routes = null;
 		
 		System.out.println("\n== 전처리 끝 ==\n");
 		
 		/* 배열 'parkArray' 내 시작 지점인 'S'의 좌표를 탐색. */
 		
 		int [] mvPoint = new int[2];	// 공원에서 배열 'routesArray' 따른 동작 시에 움직임이 시작할 위치 저장.
+		mvPoint[0] = 200;		// 더미 데이터
 		
 		for(int i = 0; i < parkArray.length; i++) {
 			for(int j = 0; j < parkArray[i].length; j++) {
@@ -75,7 +76,18 @@ public class Solution {
 					break;
 				}
 			}
-			if(mvPoint[0] != 0) break;
+			if(mvPoint[1] != 0) break;
+		}
+		
+		System.out.println("mvPoint[0] : " + mvPoint[0]);
+		
+		if(mvPoint[0] == 200) {
+			System.out.println("S 값이 없으므로 answer 반환 후 종료");
+			
+			answer[0] = 0;
+			answer[1] = 0;
+			
+			return answer;
 		}
 		
 		/*== 본격적인 로직 시작 ==*/
@@ -105,16 +117,15 @@ public class Solution {
 			 * 2. 1번 결과에 대해 문제가 없을 경우 지나가는 모든 경로를 하나하나 확인해 가면서 X 표시 없음 확인.
 			 * 3. mvPoint 인덱스를 routesArray 따라 재 계산. */
 			
-			/* 1. 지정된 방향 및 거리에 대해 OutBoundException을 계산.
+			/* 	1번 항목 계산식, 지정된 방향 및 거리에 대해 OutBoundException을 계산.
 			 * 		배열 'mvPoint'를 기준으로 'routesArray' 내 방향 및 거리를 'dirCon'를 사용하여 계산했을 때 '< 0' 또는 'park.length' 길이를
 			 * 		벗어 나지 않으면 이상 없으므로 확인. 
-			 *  */
-			
-			/* 1번 항목 계산식 
+			 * 
 			 * 1. routesArray 내 포함된 방향(W,S,W,E) 따라 인덱스(i 또는 j)를 가져온다.
 			 * 2. 'pair' 내 포함된 i, j(행 및 열)과 숫자를 'calcIndex' 내 적용 계산한다. 
 			 * 3. 계산된 'calcIndex' 내 계산된 방향을 기준으로 OutBoundException 을 판단. */
 			
+			System.out.println("\n디버깅 - dirCon.get(routesArray[i][0]) : " + dirCon.get(routesArray[i][0]).getdir() + ", " + dirCon.get(routesArray[i][0]).getdist());
 			pair = dirCon.get(routesArray[i][0]);	// 동작을 지시하는 배열 'routesArray' 내 주어진 방향 따라 방향 별 세부 계산 내용 가져오기.
 			int index = 0;
 			
@@ -122,6 +133,7 @@ public class Solution {
 				
 				// 지정된 방향(routesArray[i][0] : i)과 지정된 크기(routesArray[i][1]) 만큼 움직였을 때 위치를 계산.
 				index = mvPoint[0] + (Integer.parseInt(routesArray[i][1]) * pair.getdist()); // 이동을 했을 시에 대한 마지막 인덱스 위치.
+				System.out.println("\n디버깅 - mvPoint[0] : " + mvPoint[0] + ", Integer.parseInt(routesArray[" + i + "][1]) : " + Integer.parseInt(routesArray[i][1]) + ", pair.getdist() : " + pair.getdist() +", index : " + index + "\n");
 				// routesArray[i][1] 에 대해서 + 또는 - 범위에 대한 계산을 mvPoint[i]에 적용한 결과 
 				
 				if(index >= 0 && index <= parkArray.length-1) {	// pair.getdist() 의 값의 +/- 두 경우 모두 고려한 수식	
@@ -141,13 +153,10 @@ public class Solution {
 			
 			
 			/* 2번 항목 수행, 주어진 범위인 'index' 내에서 'mvPoint'으로부터 위치 이동 시의 "X" 여부 확인. */
-			
-			
 			if(check == 1) {
-				
 				// "행 방향" 이동 명령 시의 "X" 여부 탐색
 				if(pair.getdir().equals("i")) {
-					
+					/* 'if(mvPoint[0] <= index)' 와 'if(mvPoint[0] >= index)	' 은 현재 +와 -의 경우를 하나의 IF 문에 코딩하기 위한 조건문. */
 					if(mvPoint[0] <= index)		// '+' 방향 탐색
 						for(int k =  mvPoint[0]; k <= index; k++) {
 							if(parkArray[k][mvPoint[1]].equals("X"))
@@ -161,8 +170,7 @@ public class Solution {
 						}
 					
 					if(check == 1) {
-						
-						mvPoint[0] = mvPoint[0] + (Integer.parseInt(routesArray[i][1]) * pair.getdist());
+						mvPoint[0] = mvPoint[0] + ( Integer.parseInt(routesArray[i][1] ) * pair.getdist());
 					}
 				}
 				
@@ -175,7 +183,7 @@ public class Solution {
 								check = 0;
 					}
 					
-					if(mvPoint[0] >= index)		// '-' 방향 탐색
+					if(mvPoint[1] >= index)		// '-' 방향 탐색
 						for(int k = mvPoint[1]; k >= index; k--) {
 							if(parkArray[mvPoint[0]][k].equals("X"))
 								check = 0;
@@ -188,19 +196,20 @@ public class Solution {
 				}
 			}
 			
+			System.out.println("i : " + i + ", mvPoint : " + mvPoint[0] + " " + mvPoint[1]);
 		}// 반복문 끝
 			
-		int [] answer = mvPoint;
+		answer = mvPoint;
 		return answer;
 	}
 	
 	 private static final String[] DIRECTIONS = {"N", "S", "W", "E"};
-	 private static final String[] PARK_ELEMENTS = {"O", "X"};
+	 private static final String[] PARK_ELEMENTS = {"O", "O", "O", "O", "O", "X"};
 	 private static final Random RANDOM = new Random();
 	
 	public static void main(String[] args) {
 		
-		String[] park = generatePark(7);
+		String[] park = generatePark(50);
         String[] routes = generateRoutes(7);
 
         // 출력
