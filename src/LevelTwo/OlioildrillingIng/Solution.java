@@ -33,43 +33,6 @@ import java.util.Random;
 
 public class Solution {
 
-	public static void main(String[] args) {
-		// n과 m의 최소 크기를 정의합니다.
-        final int MIN_N = 8;
-        final int MIN_M = 8;
-
-        // n과 m의 최대 크기를 정의합니다.
-        final int MAX_N = 12;
-        final int MAX_M = 12;
-
-        // 랜덤 객체를 생성합니다.
-        Random rand = new Random();
-
-        // n과 m을 랜덤하게 생성합니다. (8 ≤ n, m ≤ 500)
-        int n = rand.nextInt(MAX_N - MIN_N + 1) + MIN_N;
-        int m = rand.nextInt(MAX_M - MIN_M + 1) + MIN_M;
-
-        // land 배열을 생성하고 랜덤한 값(0 또는 1)으로 채웁니다.
-        int[][] land = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                land[i][j] = rand.nextInt(2); // 0 또는 1
-            }
-        }
-
-        // 생성된 land 배열을 출력합니다.
-        System.out.println("Generated land array (n(세로) : " + n + ", m(가로) : " + m + "):");
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                System.out.print(land[i][j] + " ");
-            }
-            System.out.println();
-        }
-        
-        int answer = Olioildrilling(land);
-        System.out.println("\n결과 : " + answer);
-    }
-	
 	static public int Olioildrilling(int [][] land) {
 		
 		int answer = 0;
@@ -111,4 +74,43 @@ public class Solution {
 		
 		return answer;
 	}
+	
+	public static void main(String[] args) {
+		// n과 m의 최소 크기를 정의합니다.
+        final int MIN_N = 8;
+        final int MIN_M = 8;
+
+        // n과 m의 최대 크기를 정의합니다.
+        final int MAX_N = 12;
+        final int MAX_M = 12;
+
+        // 랜덤 객체를 생성합니다.
+        Random rand = new Random();
+
+        // n과 m을 랜덤하게 생성합니다. (8 ≤ n, m ≤ 500)
+        int n = rand.nextInt(MAX_N - MIN_N + 1) + MIN_N;
+        int m = rand.nextInt(MAX_M - MIN_M + 1) + MIN_M;
+
+        // land 배열을 생성하고 랜덤한 값(0 또는 1)으로 채웁니다.
+        int[][] land = new int[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                land[i][j] = rand.nextInt(2); // 0 또는 1
+            }
+        }
+
+        // 생성된 land 배열을 출력합니다.
+        System.out.println("Generated land array (n(세로) : " + n + ", m(가로) : " + m + "):");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                System.out.print(land[i][j] + " ");
+            }
+            System.out.println();
+        }
+        
+        int answer = Olioildrilling(land);
+        System.out.println("\n결과 : " + answer);
+    }
+	
+
 }

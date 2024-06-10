@@ -72,8 +72,6 @@ class Solution {
                 break;
         }
 
-        System.out.println("mvPoint[0] : " + mvPoint[0]);
-
         if (mvPoint[0] == 200) {
             System.out.println("S 값이 없으므로 answer 반환 후 종료");
 
@@ -93,8 +91,6 @@ class Solution {
 
         // routesArray의 크기 따른 배열 반복하며 OutBoundException 및 장애물 해당 안되는 동작만 실행
         // 인덱스 'i'와 'j'는 'dirCon' 내 'Pair' 와 연계되어 사용.
-        System.out.println("디버깅 - 초기 포인트 : " + mvPoint[0] + ", mvPoint[1] : " + mvPoint[1] + "\n");
-
         Pair pair;
 
         for (int i = 0; i < routesArray.length; i++) { // 요청 내용인 배열 'routesArray' 내 포함된 모든 명령 내용을 하나하나 확인하면서 실행.
@@ -118,7 +114,7 @@ class Solution {
             if (pair.getdir().equals("i")) { // 'routesArray' 지시된 이동 방향이 '행' 방향 일 때, 해당 방향에 대한 OutBoundException 실행.
 
                 // 지정된 방향(routesArray[i][0] : i)과 지정된 크기(routesArray[i][1]) 만큼 움직였을 때 위치를 계산.
-                index = mvPoint[0] + (Integer.parseInt(routesArray[i][1]) * pair.getdist()); // 이동을 했을 시에 대한 마지막 인덱스 위치.
+                index = mvPoint[0] + (Integer.parseInt(routesArray[i][1]) * pair.getdist()); // 이동을 했을 시에 대한 최종 인덱스 위치.
                 // routesArray[i][1] 에 대해서 + 또는 - 범위에 대한 계산을 mvPoint[i]에 적용한 결과
 
                 if (index >= 0 && index < parkArray.length) { // pair.getdist() 의 값의 +/- 두 경우 모두 고려한 수식
@@ -127,12 +123,20 @@ class Solution {
 
             } else if (pair.getdir().equals("j")) { // 열 방향 계산 시작
 
+            	
                 // 지정된 방향(routesArray[i][0] : j)과 지정된 크기(routesArray[i][1]) 만큼 움직였을 때 위치를 계산.
                 index = mvPoint[1] + (Integer.parseInt(routesArray[i][1]) * pair.getdist()); // 이동을 했을 시에 대한 마지막 인덱스 위치.
                 // routesArray[i][1] 에 대해서 + 또는 - 범위에 대한 계산을 mvPoint[j]에 적용한 결과
 
+                System.out.println("\n\npair.getdir().equals(\"j\") : " + pair.getdir().equals("j"));
+                System.out.println("디버깅 - 그냥 인덱스 넣는 순간 , mvPoint[0] + (Integer.parseInt(routesArray[i][1]) * pair.getdist()) : " + 
+                		mvPoint[0] + (Integer.parseInt(routesArray[i][1]) * pair.getdist()) + 
+                		", parkArray.length : " + parkArray.length + ", index : " + index);
+                
                 if (index >= 0 && index < parkArray[0].length) { // pair.getdist() 의 값의 +/- 두 경우 모두 고려한 수식
+                	
                     check = 1; // 'OutBoundException' 해당 되지 않을 시 2번째 조건 확인 위한 플래그 변수
+                    
                 }
             }
 
@@ -142,7 +146,7 @@ class Solution {
                 // "행 방향" 이동 명령 시의 "X" 여부 탐색
                 if (pair.getdir().equals("i")) {
 
-                                        if (mvPoint[0] <= index) { // '+' 방향 탐색
+                    if (mvPoint[0] <= index) { // '+' 방향 탐색
                         for (int k = mvPoint[0]; k <= index && k < parkArray.length; k++) {
                             if (parkArray[k][mvPoint[1]].equals("X")) {
                                 check = 0;
@@ -159,7 +163,7 @@ class Solution {
                             }
                         }
                     }
-
+                    
                     if (check == 1 && mvPoint[0] + (Integer.parseInt(routesArray[i][1]) * pair.getdist()) < parkArray.length) {
                         mvPoint[0] = mvPoint[0] + (Integer.parseInt(routesArray[i][1]) * pair.getdist());
                     }
@@ -186,13 +190,16 @@ class Solution {
                         }
                     }
 
+                    System.out.println("디버깅 - 인덱스 변경 적용 직전, mvPoint[0] + (Integer.parseInt(routesArray[i][1]) * pair.getdist()) : " + 
+                    		mvPoint[0] + (Integer.parseInt(routesArray[i][1]) * pair.getdist()) + 
+                    		", parkArray.length : " + parkArray.length + ", index : " + index);
+                    
                     if (check == 1 && mvPoint[1] + (Integer.parseInt(routesArray[i][1]) * pair.getdist()) < parkArray[0].length) {
+                    	
                         mvPoint[1] = mvPoint[1] + (Integer.parseInt(routesArray[i][1]) * pair.getdist());
                     }
                 }
             }
-
-            System.out.println("i : " + i + ", mvPoint : " + mvPoint[0] + " " + mvPoint[1]);
         } // 반복문 끝
 
         answer = mvPoint;
