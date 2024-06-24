@@ -12,9 +12,7 @@ public class Solution {
 		  for(int i = step; i <= n; i++) {
 			  
 			 res += i;
-			 
-			 System.out.println("res : " + res);
-			 
+			 			 
 			 if(res >= n) {
 				 if(res == n)
 					 answer += 1;
