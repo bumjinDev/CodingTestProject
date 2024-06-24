@@ -8,7 +8,6 @@ public class Solution {
 	  int res = 0;
 	  
 	  for(int step = 1; step <= n; step++) {
-		  System.out.println("\n== step : " + step + " ==");
 		  
 		  for(int i = step; i <= n; i++) {
 			  
